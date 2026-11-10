@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>MemeDetective · 搜尋線索</title><link rel="stylesheet" href="/style.css"></head>
+<body><header><a href="/" class="brand">M<span>D</span> / MemeDetective</a><span class="tag">NCCU · JAVA HW8</span></header>
+<main><section class="hero"><p class="eyebrow">FOLLOW YOUR CURIOSITY</p><h1>每個關鍵字，<br>都是一條<span>新線索。</span></h1><p class="intro">從梗圖靈感到 Java 知識，搜尋你想知道的事。<br>由 Tavily Search API 尋找真實網頁。</p>
+<form action="/" method="get" id="search-form"><label for="q" class="sr-only">搜尋關鍵字</label><div class="search"><input id="q" name="q" type="search" placeholder="輸入關鍵字，開始找線索…" th:value="${q}" required maxlength="300"><button type="submit">搜尋 ↗</button></div><p class="hint">試試看：Java 資料結構、貓咪梗圖、國立政治大學</p></form></section>
+<section class="notice" th:if="${error != null}" role="alert"><h2>暫時無法搜尋</h2><p th:text="${error}"></p></section>
+<section class="results" th:if="${results != null}" aria-live="polite"><div class="result-head"><h2>搜尋結果</h2><span th:text="|${results.size()} 筆 · Tavily 即時回傳|"></span></div>
+<div class="notice" th:if="${results.isEmpty()}"><h3>沒有找到結果</h3><p>換個關鍵字或縮短搜尋內容，再試一次吧。</p></div>
+<article th:each="result : ${results}"><p class="url" th:text="${result.url}"></p><h3><a th:href="${result.url}" th:text="${result.title}" target="_blank" rel="noopener noreferrer"></a></h3><p class="summary" th:text="${result.content}"></p></article></section>
+<div class="start" th:if="${results == null and error == null}"><span>✳</span><div><strong>準備好發現新線索了嗎？</strong><p>輸入關鍵字，標題、連結與摘要就會出現在這裡。</p></div></div>
+</main><footer><span>MemeDetective / Search the web.</span><span>Powered by Tavily · HW8</span></footer>
+<script>document.getElementById('search-form').addEventListener('submit', function(){const b=this.querySelector('button');b.disabled=true;b.textContent='搜尋中…';});window.addEventListener('pageshow',()=>{const b=document.querySelector('button');b.disabled=false;b.textContent='搜尋 ↗';});</script></body></html>
